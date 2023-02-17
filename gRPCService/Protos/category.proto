@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option csharp_namespace = "gRPC.Protos";
+
+package Category;
+
+service GrpcCategory{
+    rpc GetAll (EmptyCate) returns (CategoryList);
+    rpc GetCategory (CateIDRequest) returns (Category);
+}
+
+message EmptyCate{}
+
+message CateIDRequest{
+    int32 id = 1;
+}
+
+message CategoryList{
+    repeated Category Categories = 1;    
+}
+
+message Category{
+    int32 id = 1;
+    string categoryName = 2;    
+}

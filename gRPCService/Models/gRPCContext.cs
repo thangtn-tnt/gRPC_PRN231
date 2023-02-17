@@ -17,7 +17,8 @@ namespace gRPCService.Models
         {
         }
 
-        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -32,25 +33,30 @@ namespace gRPCService.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<Customer>(entity =>
+            modelBuilder.Entity<Category>(entity =>
             {
-                entity.HasNoKey();
+                entity.ToTable("Category");
 
-                entity.ToTable("Customer");
-
-                entity.Property(e => e.Address)
-                    .HasMaxLength(50)
-                    .HasColumnName("address");
-
-                entity.Property(e => e.Id)
+                entity.Property(e => e.CategoryName)
                     .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("id");
+                    .HasMaxLength(50);
+            });
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .HasColumnName("name");
+            modelBuilder.Entity<Product>(entity =>
+            {
+                entity.ToTable("Product");
+
+                entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+
+                entity.Property(e => e.ProductName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Product__Categor__5FB337D6");
             });
 
             OnModelCreatingPartial(modelBuilder);

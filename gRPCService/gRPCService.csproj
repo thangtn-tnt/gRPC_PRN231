@@ -2,8 +2,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-  <ItemGroup>    
-    <Protobuf Include="Protos\customer.proto" GrpcServices="Server"/>
+  <ItemGroup>
+    <Protobuf Include="Protos\product.proto" GrpcServices="Server"/>
+    <Protobuf Include="Protos\category.proto" GrpcServices="Server"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0"/>
